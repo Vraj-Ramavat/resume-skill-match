@@ -25,6 +25,15 @@ npm run db:generate
 npm run dev
 ```
 
+## Vercel Deployment
+
+1. Create a Vercel project from this repository.
+2. Set `AUTH_SECRET`, `NEXTAUTH_SECRET`, and your production `DATABASE_URL` in Vercel.
+3. Set `NEXTAUTH_URL` to your production domain, or set `NEXT_PUBLIC_APP_URL` if you prefer to keep the site origin explicit.
+4. The app reads the deployment host from Vercel automatically and uses the uploaded logo in `public/MindHatch Logo.png`.
+
+If you deploy with a persistent database provider, update `DATABASE_URL` to point to that production database before shipping.
+
 ## Scripts
 
 - `npm run dev` - start local development

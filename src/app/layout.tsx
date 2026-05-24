@@ -3,6 +3,7 @@ import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
 import SiteHeader from '@/components/site/site-header';
+import { getSiteOrigin } from '@/lib/env';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -12,6 +13,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: 'MindHatch',
   description: 'Semantic resume matching, interview planning, and audit-ready candidate workflows.',
+  metadataBase: getSiteOrigin() ? new URL(getSiteOrigin() as string) : undefined,
   icons: '/mindhatch-favicon.svg'
 };
 

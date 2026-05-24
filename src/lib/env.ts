@@ -5,6 +5,8 @@ const envSchema = z.object({
   AUTH_SECRET: z.string().optional(),
   NEXTAUTH_SECRET: z.string().min(1).optional(),
   NEXTAUTH_URL: z.string().url().optional(),
+  NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+  VERCEL_URL: z.string().optional(),
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
   UPSTASH_REDIS_REST_URL: z.string().optional(),
@@ -21,3 +23,23 @@ const envSchema = z.object({
 });
 
 export const env = envSchema.parse(process.env);
+
+export function getSiteOrigin() {
+  if (env.NEXTAUTH_URL) {
+    return env.NEXTAUTH_URL;
+  }
+
+  if (env.NEXT_PUBLIC_APP_URL) {
+    return env.NEXT_PUBLIC_APP_URL;
+  }
+
+  if (env.VERCEL_URL) {
+    return `https://${env.VERCEL_URL}`;
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    return 'http://localhost:3000';
+  }
+
+  return undefined;
+}

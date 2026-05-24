@@ -59,6 +59,7 @@ if (googleClientId && googleClientSecret) {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   secret: env.AUTH_SECRET ?? env.NEXTAUTH_SECRET ?? 'mindhatch-development-secret',
   session: { strategy: 'jwt' },
   pages: {
