@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().min(1).default('file:./prisma/dev.db'),
+  DATABASE_URL: z.string().min(1),
   AUTH_SECRET: z.string().optional(),
   NEXTAUTH_SECRET: z.string().min(1).optional(),
   NEXTAUTH_URL: z.string().optional(),
