@@ -4,8 +4,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1).default('file:./prisma/dev.db'),
   AUTH_SECRET: z.string().optional(),
   NEXTAUTH_SECRET: z.string().min(1).optional(),
-  NEXTAUTH_URL: z.string().url().optional(),
-  NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+  NEXTAUTH_URL: z.string().optional(),
+  NEXT_PUBLIC_APP_URL: z.string().optional(),
   VERCEL_URL: z.string().optional(),
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -24,13 +24,27 @@ const envSchema = z.object({
 
 export const env = envSchema.parse(process.env);
 
-export function getSiteOrigin() {
-  if (env.NEXTAUTH_URL) {
-    return env.NEXTAUTH_URL;
+function normalizeSiteUrl(value: string | undefined) {
+  if (!value) {
+    return undefined;
   }
 
-  if (env.NEXT_PUBLIC_APP_URL) {
-    return env.NEXT_PUBLIC_APP_URL;
+  if (value.startsWith('http://') || value.startsWith('https://')) {
+    return value;
+  }
+
+  return `https://${value}`;
+}
+
+export function getSiteOrigin() {
+  const nextAuthUrl = normalizeSiteUrl(env.NEXTAUTH_URL);
+  if (nextAuthUrl) {
+    return nextAuthUrl;
+  }
+
+  const publicAppUrl = normalizeSiteUrl(env.NEXT_PUBLIC_APP_URL);
+  if (publicAppUrl) {
+    return publicAppUrl;
   }
 
   if (env.VERCEL_URL) {
