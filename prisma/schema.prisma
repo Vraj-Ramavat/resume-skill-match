@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SITE_MANAGER
+  FINANCE
+  RECRUITER
+}
+
+enum AuditAction {
+  PARSE
+  NORMALIZE
+  MATCH
+  INTERVIEW_PLAN
+  EXPORT
+  AUTH
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String?
+  email        String    @unique
+  emailVerified DateTime?
+  image        String?
+  passwordHash String?
+  role         Role      @default(RECRUITER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  auditLogs    AuditLog[]
+  resumes      Resume[]
+  matchRuns    MatchRun[]
+}
+
+model Resume {
+  id          String    @id @default(cuid())
+  userId      String?
+  filename    String
+  sourceType  String
+  rawText     String?
+  parsedData   Json?
+  status      String    @default("UPLOADED")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  owner       User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  auditLogs   AuditLog[]
+  matchRuns   MatchRun[]
+}
+
+model JobDescription {
+  id          String    @id @default(cuid())
+  title       String
+  company     String?
+  description String
+  rawSkills   Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  matchRuns   MatchRun[]
+}
+
+model MatchRun {
+  id              String    @id @default(cuid())
+  resumeId        String?
+  jobDescriptionId String?
+  userId          String?
+  scoreTechnical  Int
+  scoreExperience Int
+  scoreSemantic   Int
+  overallScore    Int
+  gaps            Json?
+  interviewPlan   Json?
+  createdAt       DateTime  @default(now())
+  resume          Resume?   @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+  jobDescription  JobDescription? @relation(fields: [jobDescriptionId], references: [id], onDelete: SetNull)
+  owner           User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  auditLogs       AuditLog[]
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  userId     String?
+  resumeId   String?
+  matchRunId String?
+  action     AuditAction
+  detail     String
+  metadata   Json?
+  createdAt  DateTime    @default(now())
+  user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  resume     Resume?     @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+  matchRun   MatchRun?   @relation(fields: [matchRunId], references: [id], onDelete: SetNull)
+}

@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --background: 222 47% 6%;
+  --foreground: 210 40% 96%;
+  --card: 222 47% 9%;
+  --card-foreground: 210 40% 96%;
+  --primary: 173 92% 55%;
+  --primary-foreground: 222 47% 10%;
+  --secondary: 220 18% 16%;
+  --secondary-foreground: 210 40% 96%;
+  --muted: 220 18% 16%;
+  --muted-foreground: 215 20% 68%;
+  --accent: 189 100% 44%;
+  --accent-foreground: 222 47% 10%;
+  --border: 220 18% 18%;
+  --input: 220 18% 18%;
+  --ring: 173 92% 55%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, hsl(173 92% 55% / 0.12), transparent 35%),
+    radial-gradient(circle at top right, hsl(189 100% 44% / 0.12), transparent 30%),
+    linear-gradient(180deg, hsl(222 47% 5%), hsl(222 47% 8%) 36%, hsl(222 47% 6%));
+  color: hsl(var(--foreground));
+  font-feature-settings: "ss01" 1, "ss02" 1, "cv01" 1, "cv03" 1;
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.28);
+  color: hsl(var(--foreground));
+}

@@ -1,0 +1,5 @@
+Ava Chen
+Senior Platform Engineer
+8 years experience with Kubernetes, Docker, Terraform, React, TypeScript, PostgreSQL, Redis, and CI/CD.
+Built semantic matching systems, vector embeddings workflows, and interview question generators.
+Education: Bachelor of Engineering.
